@@ -35,15 +35,23 @@ class EmployeeApiTest {
     }
     @Test
     void should_find_employees() throws Exception {
-        Employee bob = employeeRepository.save(getEmployeeBob());
+        EmployeeRequest employeeRequest = new EmployeeRequest("Diana Prince", 23, "Female", 5000, null);
+        Employee employee = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                null));
+        employeeRepository.save(employee);
+
         mockMvc.perform(get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
     }
     @Test
     void should_find_employee_by_gender() throws Exception {
