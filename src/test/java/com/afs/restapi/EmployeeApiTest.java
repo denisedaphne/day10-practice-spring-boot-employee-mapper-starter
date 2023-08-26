@@ -185,9 +185,16 @@ class EmployeeApiTest {
 
     @Test
     void should_delete_employee_by_id() throws Exception {
-        Employee employee = employeeRepository.save(getEmployeeBob());
+        EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 24, "Male", 8000, null);
+        Employee alice = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                null));
+        employeeRepository.save(alice);
 
-        mockMvc.perform(delete("/employees/{id}", employee.getId()))
+        mockMvc.perform(delete("/employees/{id}", alice.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
         assertTrue(employeeRepository.findById(1L).isEmpty());
