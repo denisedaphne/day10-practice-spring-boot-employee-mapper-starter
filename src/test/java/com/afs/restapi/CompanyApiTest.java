@@ -161,33 +161,4 @@ class CompanyApiTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(createdEmployee.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(createdEmployee.getSalary()));
     }
-
-    private static Employee getEmployee(Company company) {
-        Employee employee = new Employee();
-        employee.setName("Bob");
-        employee.setAge(22);
-        employee.setGender("Male");
-        employee.setSalary(10000);
-        employee.setCompanyId(company.getId());
-        return employee;
-    }
-
-
-    private static Company getCompanyOOCL() {
-        Company company = new Company();
-        company.setName("OOCL");
-        return company;
-    }
-
-    private static Company getCompanyThoughtWorks() {
-        Company company = new Company();
-        company.setName("Thoughtworks");
-        return company;
-    }
-
-    private static Company getCompanyGoogle() {
-        Company company = new Company();
-        company.setName("Google");
-        return company;
-    }
 }
