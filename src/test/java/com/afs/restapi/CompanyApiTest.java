@@ -121,19 +121,21 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies_by_page() throws Exception {
-        Company oocl = companyRepository.save(getCompanyOOCL());
-        Company thoughtworks = companyRepository.save(getCompanyThoughtWorks());
-        Company google = companyRepository.save(getCompanyGoogle());
+        CompanyRequest companyRequest1 = new CompanyRequest("OOCL");
+        Company firstCompany = companyRepository.save(new Company(null, companyRequest1.getName()));
+
+        CompanyRequest companyRequest2 = new CompanyRequest("Thoughtworks");
+        Company secondCompany = companyRepository.save(new Company(null, companyRequest2.getName()));
 
         mockMvc.perform(get("/companies")
                         .param("pageNumber", "1")
                         .param("pageSize", "2"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(oocl.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(oocl.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(thoughtworks.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(thoughtworks.getName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(firstCompany.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(firstCompany.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(secondCompany.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(secondCompany.getName()));
     }
 
     @Test
