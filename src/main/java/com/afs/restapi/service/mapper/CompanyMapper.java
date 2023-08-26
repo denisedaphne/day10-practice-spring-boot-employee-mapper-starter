@@ -18,8 +18,9 @@ public class CompanyMapper {
     public static CompanyResponse toResponse(Company company) {
         CompanyResponse companyResponse = new CompanyResponse();
         BeanUtils.copyProperties(company, companyResponse);
-        companyResponse.setEmployeesCount(0);
-        //companyResponse.setEmployeesCount(company.getEmployees().size());
+
+        var employees = company.getEmployees();
+        companyResponse.setEmployeesCount((employees == null) ? 0 : employees.size());
         return companyResponse;
     }
 }
