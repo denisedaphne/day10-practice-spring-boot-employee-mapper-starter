@@ -128,15 +128,22 @@ class EmployeeApiTest {
 
     @Test
     void should_find_employee_by_id() throws Exception {
-        Employee employee = employeeRepository.save(getEmployeeBob());
+        EmployeeRequest employeeRequest = new EmployeeRequest("Diana Prince", 23, "Female", 5000, null);
+        Employee diana = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                null));
+        employeeRepository.save(diana);
 
-        mockMvc.perform(get("/employees/{id}", employee.getId()))
+        mockMvc.perform(get("/employees/{id}", diana.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(employee.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(diana.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(diana.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(diana.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(diana.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(diana.getSalary()));
     }
 
     @Test
