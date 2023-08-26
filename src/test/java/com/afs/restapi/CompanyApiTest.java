@@ -140,17 +140,26 @@ class CompanyApiTest {
 
     @Test
     void should_find_employees_by_companies() throws Exception {
-        Company oocl = companyRepository.save(getCompanyOOCL());
-        Employee employee = employeeRepository.save(getEmployee(oocl));
+        CompanyRequest companyRequest = new CompanyRequest("OOCL");
+        Company createdCompany = companyRepository.save(new Company(null, companyRequest.getName()));
 
-        mockMvc.perform(get("/companies/{companyId}/employees", oocl.getId()))
+        EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, createdCompany.getId());
+        Employee createdEmployee = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                createdCompany.getId()));
+        employeeRepository.save(createdEmployee);
+
+        mockMvc.perform(get("/companies/{companyId}/employees", createdCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(createdEmployee.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(createdEmployee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(createdEmployee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(createdEmployee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(createdEmployee.getSalary()));
     }
 
     private static Employee getEmployee(Company company) {
