@@ -40,7 +40,8 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies() throws Exception {
-        Company company = companyRepository.save(getCompanyOOCL());
+        CompanyRequest companyRequest = new CompanyRequest("OOCL");
+        Company company = companyRepository.save(new Company(null, companyRequest.getName()));
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
