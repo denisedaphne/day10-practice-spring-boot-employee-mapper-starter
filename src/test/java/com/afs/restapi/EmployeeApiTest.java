@@ -148,25 +148,39 @@ class EmployeeApiTest {
 
     @Test
     void should_find_employees_by_page() throws Exception {
-        Employee bob = employeeRepository.save(getEmployeeBob());
-        Employee susan = employeeRepository.save(getEmployeeSusan());
-        Employee lily  = employeeRepository.save(getEmployeeLily());
+        EmployeeRequest employeeRequest1 = new EmployeeRequest("Diana Prince", 23, "Female", 5000, null);
+        Employee diana = employeeRepository.save(new Employee(null,
+                employeeRequest1.getName(),
+                employeeRequest1.getAge(),
+                employeeRequest1.getGender(),
+                employeeRequest1.getSalary(),
+                null));
+        employeeRepository.save(diana);
+
+        EmployeeRequest employeeRequest2 = new EmployeeRequest("Harlene Quinzel", 20, "Female", 4000, null);
+        Employee harley = employeeRepository.save(new Employee(null,
+                employeeRequest2.getName(),
+                employeeRequest2.getAge(),
+                employeeRequest2.getGender(),
+                employeeRequest2.getSalary(),
+                null));
+        employeeRepository.save(harley);
 
         mockMvc.perform(get("/employees")
                         .param("pageNumber", "1")
                         .param("pageSize", "2"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(susan.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(susan.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(susan.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(susan.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(susan.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(diana.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(diana.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(diana.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(diana.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(diana.getSalary()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(harley.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(harley.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(harley.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(harley.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(harley.getSalary()));
     }
 
     @Test
