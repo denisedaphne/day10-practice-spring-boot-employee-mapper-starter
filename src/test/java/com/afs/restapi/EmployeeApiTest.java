@@ -199,31 +199,4 @@ class EmployeeApiTest {
 
         assertTrue(employeeRepository.findById(1L).isEmpty());
     }
-
-    private static Employee getEmployeeBob() {
-        Employee employee = new Employee();
-        employee.setName("Bob");
-        employee.setAge(22);
-        employee.setGender("Male");
-        employee.setSalary(10000);
-        return employee;
-    }
-
-    private static Employee getEmployeeSusan() {
-        Employee employee = new Employee();
-        employee.setName("Susan");
-        employee.setAge(23);
-        employee.setGender("Female");
-        employee.setSalary(11000);
-        return employee;
-    }
-
-    private static Employee getEmployeeLily() {
-        Employee employee = new Employee();
-        employee.setName("Lily");
-        employee.setAge(24);
-        employee.setGender("Female");
-        employee.setSalary(12000);
-        return employee;
-    }
 }
