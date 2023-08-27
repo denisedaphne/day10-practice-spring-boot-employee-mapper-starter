@@ -1,18 +1,14 @@
 package com.afs.restapi.service.dto;
 
+import java.util.List;
+
 public class CompanyResponse {
     private Long id;
     private String name;
-    private Integer employeesCount;
+    private int employeesCount;
+    private List<EmployeeResponse> employees;
 
-    public CompanyResponse(){
-
-    }
-
-    public CompanyResponse(Long id, String name, Integer employeesCount){
-        this.id = id;
-        this.name = name;
-        this.employeesCount = employeesCount;
+    public CompanyResponse() {
     }
 
     public Long getId() {
@@ -31,12 +27,19 @@ public class CompanyResponse {
         this.name = name;
     }
 
-    public Integer getEmployeesCount() {
+    public List<EmployeeResponse> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<EmployeeResponse> employees) {
+        this.employees = employees;
+    }
+
+    public int getEmployeesCount() {
         return employeesCount;
     }
 
-    public void setEmployeesCount(Integer employeesCount) {
+    public void setEmployeesCount(int employeesCount) {
         this.employeesCount = employeesCount;
     }
-
 }
