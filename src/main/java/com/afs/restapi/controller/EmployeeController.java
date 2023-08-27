@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -20,19 +19,19 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeResponse> getAllEmployees() {
         return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
+    public EmployeeResponse getEmployeeById(@PathVariable Long id) {
         return employeeService.findById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
-        employeeService.update(id, employee);
+    public void updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequest employeeRequest) {
+        employeeService.update(id, employeeRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +41,7 @@ public class EmployeeController {
     }
 
     @GetMapping(params = "gender")
-    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
+    public List<EmployeeResponse> getEmployeesByGender(@RequestParam String gender) {
         return employeeService.findAllByGender(gender);
     }
 
@@ -53,8 +52,7 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"pageNumber", "pageSize"})
-    public List<Employee> findEmployeesByPage(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+    public List<EmployeeResponse> findEmployeesByPage(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
         return employeeService.findByPage(pageNumber, pageSize);
     }
-
 }
