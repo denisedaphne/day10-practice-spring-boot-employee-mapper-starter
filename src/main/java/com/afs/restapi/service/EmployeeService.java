@@ -21,39 +21,44 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public List<EmployeeResponse> findAll() {
+        return employeeRepository.findAll().stream()
+                .map(EmployeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public Employee findById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(EmployeeNotFoundException::new);
+    public EmployeeResponse findById(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+        return EmployeeMapper.toResponse(employee);
     }
 
-    public void update(Long id, Employee employee) {
+    public void update(Long id, EmployeeRequest employeeRequest) {
         Employee toBeUpdatedEmployee = employeeRepository.findById(id)
                 .orElseThrow(EmployeeNotFoundException::new);
-        if (employee.getSalary() != null) {
-            toBeUpdatedEmployee.setSalary(employee.getSalary());
+        if (employeeRequest.getSalary() != null) {
+            toBeUpdatedEmployee.setSalary(employeeRequest.getSalary());
         }
-        if (employee.getAge() != null) {
-            toBeUpdatedEmployee.setAge(employee.getAge());
+        if (employeeRequest.getAge() != null) {
+            toBeUpdatedEmployee.setAge(employeeRequest.getAge());
         }
         employeeRepository.save(toBeUpdatedEmployee);
     }
 
-    public List<Employee> findAllByGender(String gender) {
-        return employeeRepository.findAllByGender(gender);
+    public List<EmployeeResponse> findAllByGender(String gender) {
+        return employeeRepository.findAllByGender(gender).stream()
+                .map(EmployeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     public EmployeeResponse create(EmployeeRequest employeeRequest) {
         Employee employee = EmployeeMapper.toEntity(employeeRequest);
-        return EmployeeMapper.toResponse(employeeRepository.save(employee));
+        employeeRepository.save(employee);
+        return EmployeeMapper.toResponse(employee);
     }
 
-    public List<Employee> findByPage(Integer pageNumber, Integer pageSize) {
-        Page<Employee> employeesInThePage = employeeRepository.findAll(PageRequest.of(pageNumber-1, pageSize));
-        return employeesInThePage.stream().collect(Collectors.toList());
+    public List<EmployeeResponse> findByPage(Integer pageNumber, Integer pageSize) {
+        Page<Employee> employeesInThePage = employeeRepository.findAll(PageRequest.of(pageNumber - 1, pageSize));
+        return employeesInThePage.stream().map(EmployeeMapper::toResponse).collect(Collectors.toList());
     }
 
     public void delete(Long id) {
